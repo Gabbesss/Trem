@@ -20,6 +20,12 @@
       align-items: center;
       gap: 20px;
     }
+    .logo {
+      width: 600px; /* redimensionado para caber bem */
+      height: auto;
+      max-width: 90vw;
+      user-select: none;
+    }
     .cd-image {
       width: 477px;
       height: 415px;
@@ -48,6 +54,7 @@
 </head>
 <body>
   <main class="stack">
+    <img class="logo" src="oi.jpg" alt="Logo oi" />
     <img class="cd-image" src="CDFOTO.jpg" alt="Imagem da caixa de CD: Trem — H. D. Gabbe" />
     <button id="playBtn" class="btn" aria-pressed="false" aria-label="Tocar playlist Trem no SoundCloud">▶︎ Play</button>
     <p class="fallback">
@@ -98,3 +105,4 @@
   </script>
 </body>
 </html>
+
