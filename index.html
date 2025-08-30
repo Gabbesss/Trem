@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trem — H. D. Gabbe</title>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #fff;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: #111;
+    }
+    .stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    .cd-image {
+      width: 477px;
+      height: 415px;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.1);
+      user-select: none;
+    }
+    .btn {
+      appearance: none;
+      border: 1px solid #111;
+      background: #111;
+      color: #fff;
+      font-size: 1rem;
+      padding: 12px 20px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform .06s ease, box-shadow .2s ease, background .2s ease;
+      box-shadow: 0 6px 18px rgba(0,0,0,.08);
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(1px); }
+    #scPlayer { width: 0; height: 0; border: 0; position: absolute; left: -9999px; }
+    .fallback { font-size: .9rem; opacity: .7; }
+  </style>
+</head>
+<body>
+  <main class="stack">
+    <img class="cd-image" src="CDFOTO.jpg" alt="Imagem da caixa de CD: Trem — H. D. Gabbe" />
+    <button id="playBtn" class="btn" aria-pressed="false" aria-label="Tocar playlist Trem no SoundCloud">▶︎ Play</button>
+    <p class="fallback">
+      Se o botão não funcionar, <a href="https://soundcloud.com/h-d-gabbe/sets/trem" target="_blank" rel="noopener">ouça a playlist no SoundCloud</a>.
+    </p>
+  </main>
+
+  <!-- Player invisível do SoundCloud -->
+  <iframe
+    id="scPlayer"
+    title="SoundCloud Player"
+    allow="autoplay"
+    src="https://w.soundcloud.com/player/?url=https%3A%2F%2Fsoundcloud.com%2Fh-d-gabbe%2Fsets%2Ftrem&visual=false&auto_play=false&buying=false&sharing=false&download=false&show_comments=false&show_user=false&hide_related=true&show_teaser=false">
+  </iframe>
+
+  <script src="https://w.soundcloud.com/player/api.js"></script>
+  <script>
+    (function(){
+      const iframe = document.getElementById('scPlayer');
+      const widget = window.SC ? SC.Widget(iframe) : null;
+      const btn = document.getElementById('playBtn');
+      if (!widget) return;
+
+      function setBtnPlayingState(playing){
+        if (playing) {
+          btn.textContent = '⏸ Pause';
+          btn.setAttribute('aria-pressed', 'true');
+        } else {
+          btn.textContent = '▶︎ Play';
+          btn.setAttribute('aria-pressed', 'false');
+        }
+      }
+
+      btn.addEventListener('click', function(){
+        widget.isPaused(function(paused){
+          if (paused) {
+            widget.play();
+          } else {
+            widget.pause();
+          }
+        });
+      });
+
+      widget.bind(SC.Widget.Events.PLAY, function(){ setBtnPlayingState(true); });
+      widget.bind(SC.Widget.Events.PAUSE, function(){ setBtnPlayingState(false); });
+      widget.bind(SC.Widget.Events.FINISH, function(){ setBtnPlayingState(false); });
+    })();
+  </script>
+</body>
+</html>
